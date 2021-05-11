@@ -131,8 +131,6 @@ dmypy.json
 
 # Code editors
 .vscode
-lib64
-lib
-share
-include
-bin
+
+# frontend
+frontend/node_modules
