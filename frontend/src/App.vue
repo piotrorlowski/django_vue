@@ -1,32 +1,34 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div class="App">
+    <h2 class="App-mainHeading">User CRUD Application</h2>
+    <div class="App-container">
+      <router-view></router-view>
     </div>
-    <router-view/>
   </div>
 </template>
 
+<script lang="ts">
+export default {
+  name: 'App',
+};
+</script>
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+@import './assets/styles.scss';
+
+.App {
+  background-color: #e5f0ff;
+  font-family: 'Source Sans Pro', sans-serif;
+  padding: 50px 0 0;
+  min-height: 1000px;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.App-mainHeading {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #236e98;
 }
 </style>

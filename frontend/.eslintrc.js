@@ -5,8 +5,10 @@ module.exports = {
   },
   extends: [
     'plugin:vue/essential',
+    'plugin:prettier/recommended',
     '@vue/airbnb',
     '@vue/typescript/recommended',
+    'eslint:recommended',
   ],
   parserOptions: {
     ecmaVersion: 2020,
@@ -17,10 +19,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)',
-      ],
+      files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
       env: {
         jest: true,
       },
