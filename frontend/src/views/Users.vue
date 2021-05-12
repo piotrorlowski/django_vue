@@ -8,14 +8,15 @@
 <script>
 import UserList from '@/components/UserList.vue';
 import UserAdd from '@/components/UserAdd.vue';
+import Vue from 'vue';
 
-export default {
+export default Vue.extend({
   name: 'Users',
   components: {
     UserAdd,
     UserList,
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

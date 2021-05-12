@@ -8,9 +8,18 @@
 </template>
 
 <script lang="ts">
-export default {
+import { mapActions } from 'vuex';
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'App',
-};
+  mounted() {
+    this.getUsers();
+  },
+  methods: {
+    ...mapActions('users', ['getUsers']),
+  },
+});
 </script>
 <style lang="scss">
 @import 'node_modules/bootstrap/scss/bootstrap';
