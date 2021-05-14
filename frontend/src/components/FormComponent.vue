@@ -78,7 +78,7 @@
     <p class="FormComponent-errorMessage" v-show="error">
       {{ error }}
     </p>
-    <b-button class="FormComponent-button" @click="performAction()">
+    <b-button class="FormComponent-button" @click="performAction">
       {{ buttonText }}
     </b-button>
     <b-modal
@@ -95,7 +95,7 @@
       </p>
       <template #modal-footer>
         <b-button
-          class="FormComponent-modalButton"
+          class="FormComponent-modalButton m-decline"
           variant="outline-primary"
           @click="showModal(false)"
         >
@@ -247,7 +247,7 @@ export default Vue.extend({
 .FormComponent-backIcon {
   vertical-align: middle;
   font-size: 20px;
-  margin-right: 4px;
+  margin: 0 4px 2px 0;
 }
 .m-margin {
   margin-bottom: 10px;
@@ -291,6 +291,16 @@ export default Vue.extend({
     font-size: 18px;
     width: 50%;
     height: 40px;
+    &.m-decline {
+      &.btn-outline-primary {
+        border: 1px solid #5284cf;
+        color: #5284cf;
+        &:hover {
+          background-color: #5284cf;
+          color: #fff;
+        }
+      }
+    }
   }
 
   .FormComponent-userName {

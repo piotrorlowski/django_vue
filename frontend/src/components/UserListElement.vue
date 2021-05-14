@@ -21,11 +21,11 @@
         ?
       </p>
       <template #modal-footer>
-        <b-button class="UserListElement-modalButton" variant="danger" @click="deleteUser(user)">
+        <b-button class="UserListElement-modalButton" variant="danger" @click="performAction(user)">
           Yes, remove this user!
         </b-button>
         <b-button
-          class="UserListElement-modalButton"
+          class="UserListElement-modalButton m-decline"
           variant="outline-primary"
           @click="showModal(false)"
         >
@@ -38,6 +38,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import User from '@/models/User';
 import { mapActions } from 'vuex';
 
 export default Vue.extend({
@@ -60,6 +61,10 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('users', ['deleteUser']),
+    async performAction(user: User) {
+      await this.deleteUser(user);
+      // TODO: add delete confirmatiom modal
+    },
     showModal(value: boolean) {
       this.modal = value;
     },
@@ -131,6 +136,16 @@ export default Vue.extend({
     font-size: 18px;
     width: 50%;
     height: 40px;
+    &.m-decline {
+      &.btn-outline-primary {
+        border: 1px solid #5284cf;
+        color: #5284cf;
+        &:hover {
+          background-color: #5284cf;
+          color: #fff;
+        }
+      }
+    }
   }
 
   .UserListElement-userName {
