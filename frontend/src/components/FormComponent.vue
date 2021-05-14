@@ -1,6 +1,16 @@
 <template>
   <form class="FormComponent">
-    <h2 class="FormComponent-heading">{{ formTitle }}</h2>
+    <div class="FormComponent-formHeader" :class="{ 'm-margin': isDetailsPage }">
+      <b-button
+        v-if="isDetailsPage"
+        class="FormComponent-button m-closeButton"
+        @click="$router.push({ name: 'userList' })"
+      >
+        <i class="FormComponent-backIcon material-icons">arrow_back</i>
+        To user list
+      </b-button>
+      <h2 class="FormComponent-heading">{{ formTitle }}</h2>
+    </div>
     <b-form-group
       id="fieldset-1"
       class="FormComponent-inputGroup"
@@ -10,7 +20,7 @@
     >
       <b-form-input
         id="firstName"
-        v-model="firstName"
+        v-model="user.firstName"
         class="FormComponent-input"
         autocomplete="off"
         type="text"
@@ -26,7 +36,7 @@
     >
       <b-form-input
         id="lastName"
-        v-model="lastName"
+        v-model="user.lastName"
         class="FormComponent-input"
         autocomplete="off"
         type="text"
@@ -42,7 +52,7 @@
     >
       <b-form-input
         id="username"
-        v-model="username"
+        v-model="user.username"
         class="FormComponent-input"
         autocomplete="off"
         type="text"
@@ -58,7 +68,7 @@
     >
       <b-form-input
         id="email"
-        v-model="email"
+        v-model="user.email"
         class="FormComponent-input"
         autocomplete="off"
         type="email"
@@ -71,6 +81,28 @@
     <b-button class="FormComponent-button" @click="performAction()">
       {{ buttonText }}
     </b-button>
+    <b-modal
+      v-model="modal"
+      cancel-disabled
+      ok-disabled
+      hide-header
+      ref="FormComponent-modal"
+      modal-class="FormComponent-modal"
+      centered
+    >
+      <p class="FormComponent-modalTitle">
+        <span class="FormComponent-userName">{{ modalCopy }}</span>
+      </p>
+      <template #modal-footer>
+        <b-button
+          class="FormComponent-modalButton"
+          variant="outline-primary"
+          @click="showModal(false)"
+        >
+          Close popup
+        </b-button>
+      </template>
+    </b-modal>
   </form>
 </template>
 
@@ -92,38 +124,53 @@ export default Vue.extend({
   },
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      username: '',
-      email: '',
+      user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        username: '',
+      },
       id: null,
+      modal: false,
     };
   },
   computed: {
     ...mapState('users', ['error']),
+    modalCopy(): string {
+      return this.isDetailsPage
+        ? `${this.userFullName} successfully updated`
+        : `${this.userFullName} successfully added`;
+    },
+    isDetailsPage(): boolean {
+      return this.$route.name === 'userDetails';
+    },
+    userFullName(): string {
+      return `${this.user.firstName} ${this.user.lastName}`;
+    },
   },
   async mounted() {
-    if (this.$route.name === 'userDetails') {
-      const user = await this.getUser(this.$route.params.id);
-      this.firstName = user.firstName;
-      this.lastName = user.lastName;
-      this.username = user.username;
-      this.email = user.email;
+    if (this.isDetailsPage) {
+      this.user = await this.getUser(this.$route.params.id);
     }
   },
   methods: {
     ...mapActions('users', ['addUser', 'updateUser', 'getUser']),
-    performAction() {
+    showModal(value: boolean) {
+      this.modal = value;
+    },
+    async performAction() {
       const data = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        username: this.username,
-        email: this.email,
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        username: this.user.username,
+        email: this.user.email,
       };
-      if (this.$route.name === 'userList') {
-        this.addUser(data);
+      if (this.isDetailsPage) {
+        await this.updateUser({ ...data, id: parseInt(this.$route.params.id, 10) });
+        this.showModal(true);
       } else {
-        this.updateUser({ ...data, id: parseInt(this.$route.params.id, 10) });
+        await this.addUser(data);
+        this.showModal(true);
       }
     },
   },
@@ -146,15 +193,13 @@ export default Vue.extend({
   text-align: center;
   color: #fff;
   font-weight: 600;
-  margin: 0 0 20px;
+  margin-bottom: 20px;
 }
-
 ::v-deep .FormComponent-inputLabel {
-  margin: 0 0 10px;
+  margin-bottom: 10px;
   color: #fff;
   font-size: 24px;
 }
-
 ::v-deep .FormComponent-input {
   font-family: 'Source Sans Pro', sans-serif;
   color: #236e98;
@@ -165,13 +210,12 @@ export default Vue.extend({
     color: #236e98;
   }
 }
-
 ::v-deep .FormComponent-button {
   width: 350px;
   height: 50px;
   font-size: 24px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.33);
-  margin: 30px 0 0;
+  margin-top: 30px;
   background-color: #d7fffe;
   border: 1px solid #d7fffe;
   color: #236e98;
@@ -194,5 +238,66 @@ export default Vue.extend({
   color: red;
   font-weight: 700;
   font-size: 30px;
+}
+.FormComponent-formHeader {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+.FormComponent-backIcon {
+  vertical-align: middle;
+  font-size: 20px;
+  margin-right: 4px;
+}
+.m-margin {
+  margin-bottom: 10px;
+}
+.m-closeButton {
+  position: absolute;
+  top: -8px;
+  left: 24px;
+  margin: 0;
+  width: 140px;
+  font-size: 18px;
+  line-height: 30px;
+}
+::v-deep .FormComponent-modal {
+  .modal-dialog {
+    max-width: 650px;
+  }
+  .modal-content {
+    text-align: center;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 22px;
+    height: 200px;
+    padding: 0 20px 0;
+    line-height: 30px;
+  }
+
+  .modal-body {
+    border-bottom: none;
+    padding: 50px 0 0;
+  }
+
+  .modal-footer {
+    padding: 10px 0 10px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .FormComponent-modalButton {
+    font-size: 18px;
+    width: 50%;
+    height: 40px;
+  }
+
+  .FormComponent-userName {
+    font-weight: 700;
+    color: #000;
+    display: inline;
+    font-size: 22px;
+  }
 }
 </style>
