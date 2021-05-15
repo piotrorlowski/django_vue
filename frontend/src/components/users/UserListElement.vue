@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import User from '@/models/User';
+import { User } from '@/models/User';
 import { mapActions } from 'vuex';
 
 export default Vue.extend({

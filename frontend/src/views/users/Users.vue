@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import UserList from '@/components/UserList.vue';
-import UserAdd from '@/components/UserAdd.vue';
+import UserList from '@/components/users/UserList.vue';
+import UserAdd from '@/components/users/UserAdd.vue';
 import Vue from 'vue';
 
 export default Vue.extend({

@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import UserListElement from '@/components/UserListElement.vue';
+import UserListElement from '@/components/users/UserListElement.vue';
 import { mapState } from 'vuex';
 import Vue from 'vue';
 

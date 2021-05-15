@@ -1,6 +1,6 @@
 <template>
   <form class="FormComponent">
-    <div class="FormComponent-formHeader" :class="{ 'm-margin': isDetailsPage }">
+    <div class="FormComponent-formHeader" :class="{ 'm-marginBottom': isDetailsPage }">
       <b-button
         v-if="isDetailsPage"
         class="FormComponent-button m-closeButton"
@@ -81,6 +81,22 @@
     <b-button class="FormComponent-button" @click="performAction">
       {{ buttonText }}
     </b-button>
+    <b-form-group
+      id="fieldset-4"
+      class="FormComponent-inputGroup"
+      label="Enter password"
+      label-for="password-logIn"
+      label-class="LogIn-formInputLabel"
+    >
+      <b-form-input
+        id="password"
+        v-model="user.password"
+        class="FormComponent-input"
+        autocomplete="off"
+        type="password"
+        trim
+      ></b-form-input>
+    </b-form-group>
     <b-modal
       v-model="modal"
       cancel-disabled
@@ -108,6 +124,7 @@
 
 <script lang="ts">
 import { mapState, mapActions } from 'vuex';
+import { User } from '@/models/User';
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -129,6 +146,7 @@ export default Vue.extend({
         lastName: '',
         email: '',
         username: '',
+        password: '',
       },
       id: null,
       modal: false,
@@ -158,18 +176,12 @@ export default Vue.extend({
     showModal(value: boolean) {
       this.modal = value;
     },
-    async performAction() {
-      const data = {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        username: this.user.username,
-        email: this.user.email,
-      };
+    async performAction(user: User) {
       if (this.isDetailsPage) {
-        await this.updateUser({ ...data, id: parseInt(this.$route.params.id, 10) });
+        await this.updateUser({ ...user, id: parseInt(this.$route.params.id, 10) });
         this.showModal(true);
       } else {
-        await this.addUser(data);
+        await this.addUser(user);
         this.showModal(true);
       }
     },
@@ -249,7 +261,7 @@ export default Vue.extend({
   font-size: 20px;
   margin: 0 4px 2px 0;
 }
-.m-margin {
+.m-marginBottom {
   margin-bottom: 10px;
 }
 .m-closeButton {

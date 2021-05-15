@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { User } from '@/models/User';
+import router from '@/router/index';
 import { createModule, action, mutation } from 'vuex-class-component';
 
 const VuexModule = createModule({ namespaced: 'users', strict: false });
@@ -8,7 +9,7 @@ function loadUsers(): User[] {
   return [];
 }
 
-const baseUrl = 'http://127.0.0.1:8000/users/';
+const baseUrl = 'http://127.0.0.1:8000/api/users/';
 
 export default class Users extends VuexModule {
   users = loadUsers();
@@ -30,8 +31,14 @@ export default class Users extends VuexModule {
 
   @action
   async getUsers() {
-    const response = await axios.get(baseUrl);
-    this.setItems(response.data.results);
+    try {
+      const response = await axios.get(baseUrl);
+      this.setItems(response.data.results);
+    } catch (err) {
+      if (router.currentRoute.name !== 'logIn') {
+        router.push({ name: 'logIn' });
+      }
+    }
   }
 
   @action

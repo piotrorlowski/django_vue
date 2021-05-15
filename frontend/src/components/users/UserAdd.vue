@@ -1,15 +1,15 @@
 <template>
-  <div class="UserDetails">
-    <FormComponent formTitle="Update user" buttonText="Update user" />
+  <div class="UserAdd">
+    <FormComponent formTitle="Add new user" buttonText="Add new user" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import FormComponent from '@/components/FormComponent.vue';
+import FormComponent from '@/components/users/FormComponent.vue';
 
 export default Vue.extend({
-  name: 'UserDetails',
+  name: 'UserAdd',
   components: {
     FormComponent,
   },
@@ -17,10 +17,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.UserDetails {
+.UserAdd {
   width: 50%;
   min-height: 450px;
-  margin: 50px auto 0;
   background-color: #5284cf;
   border-radius: 5px;
   border: 1px solid #74a1cc;
