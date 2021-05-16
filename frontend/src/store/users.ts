@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { User } from '@/models/User';
+import api from '@/services/API';
 import router from '@/router/index';
+import { User } from '@/models/User';
 import { createModule, action, mutation } from 'vuex-class-component';
 
 const VuexModule = createModule({ namespaced: 'users', strict: false });
@@ -9,10 +9,15 @@ function loadUsers(): User[] {
   return [];
 }
 
-const baseUrl = 'http://127.0.0.1:8000/api/users/';
+const baseUsersUrl = 'users/';
+const baseAuthUrl = 'auth/token/login/';
 
 export default class Users extends VuexModule {
   users = loadUsers();
+
+  errorLogIn = '';
+
+  errorSignUp = '';
 
   get items() {
     return this.users;
@@ -25,20 +30,14 @@ export default class Users extends VuexModule {
 
   @action
   async getUser(id: number) {
-    const response = await axios.get(`${baseUrl}${id}/`);
+    const response = await api.get(`${baseUsersUrl}${id}/`);
     return response.data;
   }
 
   @action
   async getUsers() {
-    try {
-      const response = await axios.get(baseUrl);
-      this.setItems(response.data.results);
-    } catch (err) {
-      if (router.currentRoute.name !== 'logIn') {
-        router.push({ name: 'logIn' });
-      }
-    }
+    const response = await api.get(baseUsersUrl);
+    this.setItems(response.data.results);
   }
 
   @action
@@ -46,7 +45,7 @@ export default class Users extends VuexModule {
     if (this.users.some((item) => item.email === user.email)) {
       throw new Error('User already exists');
     } else {
-      const response = await axios.post(baseUrl, user);
+      const response = await api.post(baseUsersUrl, user);
       this.setItems([...this.users, response.data]);
     }
   }
@@ -59,7 +58,7 @@ export default class Users extends VuexModule {
     }
     const items = this.items.slice();
 
-    const response = await axios.patch(`${baseUrl}${user.id}/`, user);
+    const response = await api.patch(`${baseUsersUrl}${user.id}/`, user);
     items[index] = response.data;
     this.setItems(items);
   }
@@ -75,8 +74,8 @@ export default class Users extends VuexModule {
         id: user.id,
       },
     };
-    await axios
-      .delete(`${baseUrl}${user.id}/`, config)
+    await api
+      .delete(`${baseUsersUrl}${user.id}/`, config)
       .then((response) => {
         if ([200, 204].includes(response.status)) {
           this.setItems(this.items.filter((_, index) => itemIndex !== index));
@@ -85,5 +84,18 @@ export default class Users extends VuexModule {
       .catch((error) => {
         throw new Error(error);
       });
+  }
+
+  @action
+  async logIn(user: User) {
+    try {
+      const response = await api.post(baseAuthUrl, user);
+      window.localStorage.setItem('authToken', response.data.authToken);
+      this.errorLogIn = '';
+      router.push({ name: 'userList' });
+    } catch (err) {
+      const error = err.response.data.nonFieldErrors[0];
+      this.errorLogIn = error;
+    }
   }
 }

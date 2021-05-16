@@ -15,10 +15,8 @@
     >
       <p class="UserListElement-modalTitle">
         Do you really want to remove
-        <span class="UserListElement-userName">
-          {{ userFullName }}
-        </span>
-        ?
+        <span class="UserListElement-userName">{{ userFullName }}</span>
+        <span>?</span>
       </p>
       <template #modal-footer>
         <b-button class="UserListElement-modalButton" variant="danger" @click="performAction(user)">

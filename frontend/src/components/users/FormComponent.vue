@@ -75,18 +75,12 @@
         trim
       ></b-form-input>
     </b-form-group>
-    <p class="FormComponent-errorMessage" v-show="error">
-      {{ error }}
-    </p>
-    <b-button class="FormComponent-button" @click="performAction">
-      {{ buttonText }}
-    </b-button>
     <b-form-group
       id="fieldset-4"
       class="FormComponent-inputGroup"
       label="Enter password"
       label-for="password-logIn"
-      label-class="LogIn-formInputLabel"
+      label-class="FormComponent-inputLabel"
     >
       <b-form-input
         id="password"
@@ -97,6 +91,12 @@
         trim
       ></b-form-input>
     </b-form-group>
+    <p class="FormComponent-errorMessage" v-show="error">
+      {{ error }}
+    </p>
+    <b-button class="FormComponent-button" @click="performAction">
+      {{ buttonText }}
+    </b-button>
     <b-modal
       v-model="modal"
       cancel-disabled
@@ -115,7 +115,7 @@
           variant="outline-primary"
           @click="showModal(false)"
         >
-          Close popup
+          Understood
         </b-button>
       </template>
     </b-modal>
@@ -181,7 +181,7 @@ export default Vue.extend({
         await this.updateUser({ ...user, id: parseInt(this.$route.params.id, 10) });
         this.showModal(true);
       } else {
-        await this.addUser(user);
+        await this.addUser(this.user);
         this.showModal(true);
       }
     },

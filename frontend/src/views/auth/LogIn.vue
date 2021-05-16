@@ -37,10 +37,10 @@
             ></b-form-input>
           </b-form-group>
         </div>
-        <p class="LogIn-errorMessage" v-show="error">
-          {{ error }}
+        <p class="LogIn-errorMessage" v-show="errorLogIn">
+          {{ errorLogIn }}
         </p>
-        <b-button class="LogIn-button" @click="logIn">LogIn</b-button>
+        <b-button class="LogIn-button" @click="logIn(userLogIn)">Log in</b-button>
       </form>
       <div class="LogIn-formHeader m-marginTop"><h2 class="LogIn-heading">Sign Up</h2></div>
       <form class="LogIn-innerForm">
@@ -128,49 +128,41 @@
             trim
           ></b-form-input>
         </b-form-group>
-        <p class="LogIn-errorMessage" v-show="error">
-          {{ error }}
+        <p class="LogIn-errorMessage" v-show="errorSignUp">
+          {{ errorSignUp }}
         </p>
         <b-button class="LogIn-button" @click="signUp">Sign up</b-button>
       </form>
-      <g-signin-button
-        :params="googleSignInParams"
-        @success="onGoogleSignInSuccess"
-        @error="onGoogleSignInError"
-        class="LogIn-googleContainer"
-      >
-        <b-button class="LogIn-googleButton" @click="signUp">
-          <div class="LogIn-logoContainer">
-            <img src="../../assets/google.png" class="LogIn-googleLogo" alt="Google-logo" />
-          </div>
-          <p class="LogIn-buttonCopy">Sign in with Google</p>
-        </b-button>
-      </g-signin-button>
+      <b-button class="LogIn-googleButton" v-google-signin-button="clientId">
+        <div class="LogIn-logoContainer">
+          <img src="../../assets/google.png" class="LogIn-googleLogo" alt="Google-logo" />
+        </div>
+        <p class="LogIn-buttonCopy">Sign in with Google</p>
+      </b-button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import GoogleSignInButton from 'vue-google-signin-button-directive';
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   name: 'LogIn',
+  directives: {
+    GoogleSignInButton,
+  },
   data() {
     return {
-      googleSignInParams: {
-        clientId: '600729137370-h25svjos6nbofm48mmtacd3hjq6ogu95.apps.googleusercontent.com',
-      },
+      clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
       userLogIn: {
         username: '',
-        pass: '',
-        firstName: '',
-        lastName: '',
-        email: '',
+        password: '',
       },
       userSignUp: {
         username: '',
-        pass: '',
+        password: '',
         firstName: '',
         lastName: '',
         email: '',
@@ -178,14 +170,16 @@ export default Vue.extend({
       error: '',
     };
   },
+  computed: {
+    ...mapState('users', ['errorLogIn', 'errorSignUp']),
+  },
   methods: {
-    ...mapActions('users', ['addUser']),
-    logIn() {
-      return null;
+    ...mapActions('users', ['addUser', 'logIn', 'signUp']),
+    OnGoogleAuthSuccess(idToken: string) {
+      console.log(idToken);
     },
-    async signUp() {
-      await this.addUser(this.userSignUp);
-      return null;
+    OnGoogleAuthFail(error: any) {
+      console.log(error);
     },
   },
 });
@@ -195,9 +189,9 @@ export default Vue.extend({
   width: 25%;
   min-height: 450px;
   margin: 50px auto 0;
-  background-color: #5284cf;
+  background-color: #3a6dba;
   border-radius: 5px;
-  border: 1px solid #74a1cc;
+  border: 1px solid #3a6dba;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.33);
   display: flex;
   flex-flow: column wrap;
@@ -283,29 +277,23 @@ export default Vue.extend({
     }
   }
 }
-.LogIn-googleContainer {
+
+.LogIn-googleButton {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-.LogIn-googleButton {
   font-size: 24px;
   margin-top: 20px;
   border: 1px solid #4285f4;
-  text-align: center;
   border-radius: 5px;
   padding: 0;
-  width: 100%;
   height: 50px;
   font-family: 'Roboto', arial, sans-serif;
-  display: flex;
   flex-flow: row;
   justify-content: space-between;
   background-color: #4285f4;
   color: #fff;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.33);
-  align-items: center;
 
   .LogIn-logoContainer {
     display: flex;
@@ -340,9 +328,9 @@ export default Vue.extend({
 }
 
 .LogIn-errorMessage {
-  color: red;
+  color: #fff;
   font-weight: 700;
-  font-size: 30px;
+  font-size: 14px;
 }
 .LogIn-innerForm {
   width: 100%;

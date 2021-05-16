@@ -10932,10 +10932,10 @@ vue-functional-data-merge@^3.1.0:
   resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz#08a7797583b7f35680587f8a1d51d729aa1dc657"
   integrity sha512-leT4kdJVQyeZNY1kmnS1xiUlQ9z1B/kdBFCILIjYYQDqZgLqCLa0UhjSSeRX6c3mUe6U5qYeM8LrEqkHJ1B4LA==
 
-vue-google-signin-button@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/vue-google-signin-button/-/vue-google-signin-button-1.0.4.tgz#733e9fea786ff730278c8eef8be9f594adc8d7b8"
-  integrity sha512-spmf+qPQQ1zAEndDxybYsf22U47eYPuvU9cb1N9YETmPQ4+UBG9ALLxgID1mHkusvBVclRyxmvJc3zc7hD56wg==
+vue-google-signin-button-directive@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/vue-google-signin-button-directive/-/vue-google-signin-button-directive-1.0.3.tgz#5d4fb188e85be05596647cb3d719bda457c7f21d"
+  integrity sha512-S2gG+Zu+E+B/IoyXfbz/AixVrvZhnXU+G83bTtzhUAO9RaMg597G3XUpZOHHdgWBc/Szys/kHSbPXlONjR4wjQ==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"

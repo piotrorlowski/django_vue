@@ -9,12 +9,19 @@
 import UserList from '@/components/users/UserList.vue';
 import UserAdd from '@/components/users/UserAdd.vue';
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   name: 'Users',
   components: {
     UserAdd,
     UserList,
+  },
+  mounted() {
+    this.getUsers();
+  },
+  methods: {
+    ...mapActions('users', ['getUsers']),
   },
 });
 </script>

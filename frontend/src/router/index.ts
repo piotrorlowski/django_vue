@@ -7,9 +7,30 @@ import Users from '@/views/users/Users.vue';
 Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
-  { path: '/login', name: 'logIn', component: LogIn },
-  { path: '/users', name: 'userList', component: Users },
-  { path: '/details/:id', name: 'userDetails', component: UserDetails },
+  {
+    path: '/login',
+    name: 'logIn',
+    component: LogIn,
+    meta: {
+      title: 'Login Page',
+    },
+  },
+  {
+    path: '/users',
+    name: 'userList',
+    component: Users,
+    meta: {
+      title: 'User list page',
+    },
+  },
+  {
+    path: '/details/:id',
+    name: 'userDetails',
+    component: UserDetails,
+    meta: {
+      title: 'User details page',
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -21,8 +42,19 @@ router.afterEach((to) => {
   // Use next tick to handle router history correctly
   // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
   Vue.nextTick(() => {
-    document.title = to.meta.title || 'userList';
+    document.title = to.meta.title || 'DjangoVueJSApp';
   });
+});
+
+router.beforeEach((to, from, next) => {
+  const token = window.localStorage.getItem('authToken');
+  if (to.name !== 'logIn' && !token) {
+    next({ name: 'logIn' });
+  } else if (to.name === 'logIn' && token) {
+    next({ name: from.name });
+  } else {
+    next();
+  }
 });
 
 export default router;
