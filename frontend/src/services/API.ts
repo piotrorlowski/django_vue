@@ -15,7 +15,7 @@ api.interceptors.request.use(
     }
     return reqConfig;
   },
-  (err) => Promise.reject(err),
+  (err) => Promise.reject(err)
 );
 
 export default api;

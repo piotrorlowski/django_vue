@@ -62,7 +62,7 @@ export default class Users extends VuexModule {
       } catch (err) {
         const error = err.response.data;
         const errorsArray: string[] = Object.entries(error).map(
-          ([key, value]) => `${key}: ${value}`,
+          ([key, value]) => `${key}: ${value}`
         );
         this.formErrors = errorsArray;
       }
