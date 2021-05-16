@@ -9,8 +9,7 @@
     "lint": "eslint --ext .ts --ext .vue ./* --fix --max-warnings 0",
     "pre-commit": "lint-staged",
     "postinstall": "cd .. && husky install frontend/.husky",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "prepare": "cd .. && husky install frontend/.husky"
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "husky": {
     "hooks": {
@@ -27,6 +26,7 @@
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@popperjs/core": "^2.9.2",
+    "@types/node": "^15.3.0",
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
     "bootstrap": "^4.5.3",
