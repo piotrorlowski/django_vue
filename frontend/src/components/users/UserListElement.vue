@@ -15,10 +15,8 @@
     >
       <p class="UserListElement-modalTitle">
         Do you really want to remove
-        <span class="UserListElement-userName">
-          {{ userFullName }}
-        </span>
-        ?
+        <span class="UserListElement-userName">{{ userFullName }}</span>
+        <span>?</span>
       </p>
       <template #modal-footer>
         <b-button class="UserListElement-modalButton" variant="danger" @click="performAction(user)">
@@ -38,7 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import User from '@/models/User';
+import { User } from '@/models/User';
 import { mapActions } from 'vuex';
 
 export default Vue.extend({
@@ -63,7 +61,6 @@ export default Vue.extend({
     ...mapActions('users', ['deleteUser']),
     async performAction(user: User) {
       await this.deleteUser(user);
-      // TODO: add delete confirmatiom modal
     },
     showModal(value: boolean) {
       this.modal = value;
@@ -117,6 +114,7 @@ export default Vue.extend({
     height: 200px;
     padding: 0 20px 0;
     line-height: 30px;
+    background-color: #f2f8fd;
   }
 
   .modal-body {

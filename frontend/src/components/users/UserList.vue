@@ -1,14 +1,15 @@
 <template>
   <div class="UserList">
     <h2 class="UserList-heading">Users</h2>
-    <UserListElement v-for="user in users" :key="user.id" :user="user" />
+    <UserListElement v-for="user in filteredUsers" :key="user.id" :user="user" />
   </div>
 </template>
 
 <script lang="ts">
-import UserListElement from '@/components/UserListElement.vue';
+import UserListElement from '@/components/users/UserListElement.vue';
 import { mapState } from 'vuex';
 import Vue from 'vue';
+import { User } from '@/models/User';
 
 export default Vue.extend({
   name: 'UserList',
@@ -16,7 +17,13 @@ export default Vue.extend({
     UserListElement,
   },
   computed: {
-    ...mapState('users', ['users']),
+    ...mapState('users', ['users', 'authenticatedUserId']),
+    filteredUsers(): User[] {
+      const id = this.authenticatedUserId;
+      return this.users
+        .filter((user: User) => !user.isSuperuser)
+        .filter((user: User) => user.id !== id);
+    },
   },
 });
 </script>

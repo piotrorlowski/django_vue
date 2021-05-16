@@ -134,5 +134,6 @@ dmypy.json
 
 # frontend
 frontend/node_modules
+frontend/.husky
 
 db.sqlite3

@@ -3,6 +3,7 @@ module.exports = {
   env: {
     node: true,
   },
+  plugins: ['@typescript-eslint', 'no-loops', 'prettier'],
   extends: [
     'plugin:vue/essential',
     'plugin:prettier/recommended',
@@ -14,9 +15,14 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
+    'no-loops/no-loops': 2,
+    'import/no-unresolved': 'off',
     'class-methods-use-this': 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': 1,
+    'no-debugger': 1,
+    'object-curly-newline': 'off',
+    'comma-dangle': 'off',
+    'import/extensions': 'off',
   },
   overrides: [
     {

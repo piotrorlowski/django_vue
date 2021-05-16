@@ -6,22 +6,41 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "eslint --ext .ts --ext .vue . --fix --max-warnings 0",
+    "pre-commit": "lint-staged",
+    "prepare": "cd .. && husky install frontend/.husky && git config --unset-all core.hooksPath && pre-commit install",
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run prettier-format && yarn run lint"
+    }
+  },
+  "lint-staged": {
+    "./**/*.{js,ts,json,css,scss,md}": [
+      "prettier --write",
+      "yarn lint",
+      "git add"
+    ]
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@popperjs/core": "^2.9.2",
+    "@types/node": "^15.3.0",
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-no-loops": "^0.3.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "git-hooks": "^1.1.10",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
     "prettier": "^2.2.1",
     "vue": "^2.6.11",
+    "vue-google-signin-button-directive": "^1.0.3",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",
     "vuex-class-component": "^2.3.5",
@@ -44,6 +63,8 @@
     "eslint": "^7.26.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",

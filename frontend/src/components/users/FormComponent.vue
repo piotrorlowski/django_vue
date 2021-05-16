@@ -1,6 +1,6 @@
 <template>
   <form class="FormComponent">
-    <div class="FormComponent-formHeader" :class="{ 'm-margin': isDetailsPage }">
+    <div class="FormComponent-formHeader" :class="{ 'm-marginBottom': isDetailsPage }">
       <b-button
         v-if="isDetailsPage"
         class="FormComponent-button m-closeButton"
@@ -75,10 +75,26 @@
         trim
       ></b-form-input>
     </b-form-group>
-    <p class="FormComponent-errorMessage" v-show="error">
-      {{ error }}
+    <b-form-group
+      id="fieldset-4"
+      class="FormComponent-inputGroup"
+      label="Enter password"
+      label-for="password-logIn"
+      label-class="FormComponent-inputLabel"
+    >
+      <b-form-input
+        id="password"
+        v-model="user.password"
+        class="FormComponent-input"
+        autocomplete="off"
+        type="password"
+        trim
+      ></b-form-input>
+    </b-form-group>
+    <p class="FormComponent-errorMessage" v-show="formErrors.length">
+      {{ formErrors }}
     </p>
-    <b-button class="FormComponent-button" @click="performAction">
+    <b-button class="FormComponent-button" @click="performAction(user)">
       {{ buttonText }}
     </b-button>
     <b-modal
@@ -99,7 +115,7 @@
           variant="outline-primary"
           @click="showModal(false)"
         >
-          Close popup
+          Ok
         </b-button>
       </template>
     </b-modal>
@@ -108,6 +124,7 @@
 
 <script lang="ts">
 import { mapState, mapActions } from 'vuex';
+import { User } from '@/models/User';
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -129,17 +146,21 @@ export default Vue.extend({
         lastName: '',
         email: '',
         username: '',
+        password: '',
       },
       id: null,
       modal: false,
     };
   },
   computed: {
-    ...mapState('users', ['error']),
+    ...mapState('users', ['formErrors']),
     modalCopy(): string {
+      if (this.formErrors.length) {
+        return this.formErrors[0];
+      }
       return this.isDetailsPage
-        ? `${this.userFullName} successfully updated`
-        : `${this.userFullName} successfully added`;
+        ? `${this.userFullName} was successfully updated`
+        : `${this.userFullName} was successfully added`;
     },
     isDetailsPage(): boolean {
       return this.$route.name === 'userDetails';
@@ -158,18 +179,12 @@ export default Vue.extend({
     showModal(value: boolean) {
       this.modal = value;
     },
-    async performAction() {
-      const data = {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        username: this.user.username,
-        email: this.user.email,
-      };
+    async performAction(user: User) {
       if (this.isDetailsPage) {
-        await this.updateUser({ ...data, id: parseInt(this.$route.params.id, 10) });
+        await this.updateUser({ ...user, id: parseInt(this.$route.params.id, 10) });
         this.showModal(true);
       } else {
-        await this.addUser(data);
+        await this.addUser(this.user);
         this.showModal(true);
       }
     },
@@ -235,9 +250,9 @@ export default Vue.extend({
   }
 }
 .FormComponent-errorMessage {
-  color: red;
+  color: #fff;
   font-weight: 700;
-  font-size: 30px;
+  font-size: 14px;
 }
 .FormComponent-formHeader {
   position: relative;
@@ -249,7 +264,7 @@ export default Vue.extend({
   font-size: 20px;
   margin: 0 4px 2px 0;
 }
-.m-margin {
+.m-marginBottom {
   margin-bottom: 10px;
 }
 .m-closeButton {
@@ -272,6 +287,7 @@ export default Vue.extend({
     height: 200px;
     padding: 0 20px 0;
     line-height: 30px;
+    background-color: #f2f8fd;
   }
 
   .modal-body {

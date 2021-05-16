@@ -1,25 +1,36 @@
 <template>
-  <div class="UserAdd">
-    <FormComponent formTitle="Add new user" buttonText="Add new user" />
+  <div class="UserDetails">
+    <FormComponent formTitle="Update user" buttonText="Update user" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import FormComponent from '@/components/FormComponent.vue';
+import FormComponent from '@/components/users/FormComponent.vue';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
-  name: 'UserAdd',
+  name: 'UserDetails',
   components: {
     FormComponent,
+  },
+  mounted() {
+    this.getUsers();
+  },
+  computed: {
+    ...mapState('users', ['users']),
+  },
+  methods: {
+    ...mapActions('users', ['getUsers']),
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.UserAdd {
+.UserDetails {
   width: 50%;
   min-height: 450px;
+  margin: 50px auto 0;
   background-color: #5284cf;
   border-radius: 5px;
   border: 1px solid #74a1cc;
