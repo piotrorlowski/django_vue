@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "eslint --ext .ts --ext .vue ./* --fix --max-warnings 0",
+    "lint": "eslint --ext .ts --ext .vue . --fix --max-warnings 0",
     "pre-commit": "lint-staged",
     "prepare": "cd .. && husky install frontend/.husky && git config --unset-all core.hooksPath && pre-commit install",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"

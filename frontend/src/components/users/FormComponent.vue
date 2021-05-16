@@ -91,10 +91,10 @@
         trim
       ></b-form-input>
     </b-form-group>
-    <p class="FormComponent-errorMessage" v-show="error">
-      {{ error }}
+    <p class="FormComponent-errorMessage" v-show="formErrors.length">
+      {{ formErrors }}
     </p>
-    <b-button class="FormComponent-button" @click="performAction">
+    <b-button class="FormComponent-button" @click="performAction(user)">
       {{ buttonText }}
     </b-button>
     <b-modal
@@ -115,7 +115,7 @@
           variant="outline-primary"
           @click="showModal(false)"
         >
-          Understood
+          Ok
         </b-button>
       </template>
     </b-modal>
@@ -153,11 +153,14 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('users', ['error']),
+    ...mapState('users', ['formErrors']),
     modalCopy(): string {
+      if (this.formErrors.length) {
+        return this.formErrors[0];
+      }
       return this.isDetailsPage
-        ? `${this.userFullName} successfully updated`
-        : `${this.userFullName} successfully added`;
+        ? `${this.userFullName} was successfully updated`
+        : `${this.userFullName} was successfully added`;
     },
     isDetailsPage(): boolean {
       return this.$route.name === 'userDetails';
@@ -247,9 +250,9 @@ export default Vue.extend({
   }
 }
 .FormComponent-errorMessage {
-  color: red;
+  color: #fff;
   font-weight: 700;
-  font-size: 30px;
+  font-size: 14px;
 }
 .FormComponent-formHeader {
   position: relative;
@@ -284,6 +287,7 @@ export default Vue.extend({
     height: 200px;
     padding: 0 20px 0;
     line-height: 30px;
+    background-color: #f2f8fd;
   }
 
   .modal-body {

@@ -48,11 +48,13 @@ router.afterEach((to) => {
 
 router.beforeEach((to, from, next) => {
   const token = window.localStorage.getItem('authToken');
-  if (to.name !== 'logIn' && !token) {
+  const toPathName = to.name;
+  const fromPathName = from.name;
+  if (toPathName !== 'logIn' && !token) {
     next({ name: 'logIn' });
-  } else if (to.name === 'logIn' && token) {
-    if (from.name) {
-      next({ name: from.name });
+  } else if (toPathName === 'logIn' && token) {
+    if (fromPathName) {
+      next({ name: fromPathName });
     }
   } else {
     next();

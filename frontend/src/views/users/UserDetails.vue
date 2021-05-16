@@ -7,11 +7,21 @@
 <script lang="ts">
 import Vue from 'vue';
 import FormComponent from '@/components/users/FormComponent.vue';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   name: 'UserDetails',
   components: {
     FormComponent,
+  },
+  mounted() {
+    this.getUsers();
+  },
+  computed: {
+    ...mapState('users', ['users']),
+  },
+  methods: {
+    ...mapActions('users', ['getUsers']),
   },
 });
 </script>

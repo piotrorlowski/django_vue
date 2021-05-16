@@ -18,8 +18,11 @@ module.exports = {
     'no-loops/no-loops': 2,
     'import/no-unresolved': 'off',
     'class-methods-use-this': 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': 1,
+    'no-debugger': 1,
+    'object-curly-newline': 'off',
+    'comma-dangle': 'off',
+    'import/extensions': 'off',
   },
   overrides: [
     {

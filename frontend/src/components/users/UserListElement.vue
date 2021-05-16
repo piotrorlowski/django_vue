@@ -61,7 +61,6 @@ export default Vue.extend({
     ...mapActions('users', ['deleteUser']),
     async performAction(user: User) {
       await this.deleteUser(user);
-      // TODO: add delete confirmatiom modal
     },
     showModal(value: boolean) {
       this.modal = value;
@@ -115,6 +114,7 @@ export default Vue.extend({
     height: 200px;
     padding: 0 20px 0;
     line-height: 30px;
+    background-color: #f2f8fd;
   }
 
   .modal-body {

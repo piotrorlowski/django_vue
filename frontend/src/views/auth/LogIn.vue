@@ -37,47 +37,13 @@
             ></b-form-input>
           </b-form-group>
         </div>
-        <p class="LogIn-errorMessage" v-show="errorLogIn">
+        <p class="LogIn-errorMessage" v-show="errorLogIn.length">
           {{ errorLogIn }}
         </p>
         <b-button class="LogIn-button" @click="logIn(userLogIn)">Log in</b-button>
       </form>
       <div class="LogIn-formHeader m-marginTop"><h2 class="LogIn-heading">Sign Up</h2></div>
       <form class="LogIn-innerForm">
-        <div class="LogIn-innerFormContainer">
-          <b-form-group
-            id="firstName-signUp-group"
-            class="LogIn-formInputGroup"
-            label="Enter first name"
-            label-for="firstName"
-            label-class="LogIn-formInputLabel"
-          >
-            <b-form-input
-              id="firstName-signUp-input"
-              v-model="userSignUp.firstName"
-              class="LogIn-formInput"
-              autocomplete="off"
-              type="text"
-              trim
-            ></b-form-input>
-          </b-form-group>
-          <b-form-group
-            id="lastName-signUp-group"
-            class="LogIn-formInputGroup m-flexEnd"
-            label="Enter last name"
-            label-for="lastName"
-            label-class="LogIn-formInputLabel"
-          >
-            <b-form-input
-              id="lastName-signUp-input"
-              v-model="userSignUp.lastName"
-              class="LogIn-formInput"
-              autocomplete="off"
-              type="text"
-              trim
-            ></b-form-input>
-          </b-form-group>
-        </div>
         <div class="LogIn-innerFormContainer">
           <b-form-group
             id="username-signUp-group"
@@ -128,10 +94,10 @@
             trim
           ></b-form-input>
         </b-form-group>
-        <p class="LogIn-errorMessage" v-show="errorSignUp">
+        <p class="LogIn-errorMessage" v-show="errorSignUp.length">
           {{ errorSignUp }}
         </p>
-        <b-button class="LogIn-button" @click="signUp">Sign up</b-button>
+        <b-button class="LogIn-button" @click="signUp(userSignUp)">Sign up</b-button>
       </form>
       <b-button class="LogIn-googleButton" v-google-signin-button="clientId">
         <div class="LogIn-logoContainer">
@@ -163,8 +129,6 @@ export default Vue.extend({
       userSignUp: {
         username: '',
         password: '',
-        firstName: '',
-        lastName: '',
         email: '',
       },
       error: '',
@@ -176,9 +140,11 @@ export default Vue.extend({
   methods: {
     ...mapActions('users', ['addUser', 'logIn', 'signUp']),
     OnGoogleAuthSuccess(idToken: string) {
+      // eslint-disable-next-line
       console.log(idToken);
     },
     OnGoogleAuthFail(error: Error) {
+      // eslint-disable-next-line
       console.log(error);
     },
   },

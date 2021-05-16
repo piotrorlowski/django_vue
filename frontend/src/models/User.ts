@@ -5,4 +5,6 @@ export type User = {
   username: string;
   id: number;
   password: string;
+  isAuthenticated: boolean;
+  isSuperuser: boolean;
 };
