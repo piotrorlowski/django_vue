@@ -178,7 +178,7 @@ export default Vue.extend({
     OnGoogleAuthSuccess(idToken: string) {
       console.log(idToken);
     },
-    OnGoogleAuthFail(error: Error) {
+    OnGoogleAuthFail(error: any) {
       console.log(error);
     },
   },
