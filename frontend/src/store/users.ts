@@ -10,7 +10,7 @@ function loadUsers(): User[] {
 }
 
 const baseUsersUrl = 'users/';
-const baseAuthUrl = 'auth/token/login/';
+const baseAuthUrlLogIn = 'auth/token/login/';
 
 export default class Users extends VuexModule {
   users = loadUsers();
@@ -89,7 +89,7 @@ export default class Users extends VuexModule {
   @action
   async logIn(user: User) {
     try {
-      const response = await api.post(baseAuthUrl, user);
+      const response = await api.post(baseAuthUrlLogIn, user);
       window.localStorage.setItem('authToken', response.data.authToken);
       this.errorLogIn = '';
       router.push({ name: 'userList' });
