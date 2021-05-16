@@ -6,14 +6,20 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "eslint './**/*.{ts}' --max-warnings 0",
+    "pre-commit": "lint-staged",
+    "postinstall": "husky install",
+    "prepare": "cd .. && husky install frontend/.husky"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
-    "*.{js,vue} --max-warnings 0": [
-      "vue-cli-service lint",
+    "./**/*.{js,ts,json,css,scss,md}": [
+      "prettier --write",
+      "yarn lint",
       "git add"
     ]
   },
@@ -55,6 +61,7 @@
     "eslint": "^7.26.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
+    "husky": "^6.0.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
