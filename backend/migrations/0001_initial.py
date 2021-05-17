@@ -44,16 +44,16 @@ USERS = [
 
 def create_user_entries(apps, schema_editor):
     User = apps.get_model("auth", "User")
-    users = [
+    for user in USERS:
         User.objects.update_or_create(
             first_name=user["first_name"],
             last_name=user["last_name"],
             username=user["username"],
             email=user["email"],
         )
-        for user in USERS
-    ]
-    return users
+    User.objects.create_superuser(
+        username="super", email="super@super.super", password="super"
+    )
 
 
 class Migration(migrations.Migration):
