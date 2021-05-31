@@ -39,8 +39,6 @@ const router = new VueRouter({
 });
 
 router.afterEach((to) => {
-  // Use next tick to handle router history correctly
-  // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
   Vue.nextTick(() => {
     document.title = to.meta.title || 'DjangoVueJSApp';
   });
@@ -48,14 +46,12 @@ router.afterEach((to) => {
 
 router.beforeEach((to, from, next) => {
   const token = window.localStorage.getItem('authToken');
-  const toPathName = to.name;
-  const fromPathName = from.name;
-  if (toPathName !== 'logIn' && !token) {
+  if (to.name !== 'logIn' && !token) {
     next({ name: 'logIn' });
-  } else if (toPathName === 'logIn' && token) {
-    if (fromPathName) {
-      next({ name: fromPathName });
-    }
+  } else if (to.name === 'logIn' && token) {
+    next({ name: 'userList' });
+  } else if (to.path === '/' && token) {
+    next({ name: 'userList' });
   } else {
     next();
   }
