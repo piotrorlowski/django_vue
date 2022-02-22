@@ -53,7 +53,7 @@ export default Vue.extend({
   background-color: #e5f0ff;
   font-family: 'Source Sans Pro', sans-serif;
   padding: 100px 0 0;
-  min-height: 1000px;
+  height: 100vh;
 }
 
 .App-navBar {

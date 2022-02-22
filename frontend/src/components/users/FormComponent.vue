@@ -221,6 +221,7 @@ export default Vue.extend({
   font-weight: 600;
   font-size: 24px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.33);
+  height: 50px;
   &:focus {
     color: #236e98;
   }
