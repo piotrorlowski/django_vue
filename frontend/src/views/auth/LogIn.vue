@@ -94,9 +94,11 @@
             trim
           ></b-form-input>
         </b-form-group>
-        <p class="LogIn-errorMessage" v-show="errorSignUp.length">
-          {{ errorSignUp }}
-        </p>
+        <div class="LogIn-errorMessage" v-show="errorSignUp.length">
+          <ul>
+            <li v-for="(error, index) in errorSignUp" :key="`${error}-${index}`">{{ error }}</li>
+          </ul>
+        </div>
         <b-button class="LogIn-button" @click="signUp(userSignUp)">Sign up</b-button>
       </form>
       <b-button class="LogIn-googleButton" v-google-signin-button="clientId">

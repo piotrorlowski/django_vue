@@ -130,8 +130,16 @@ export default class Users extends VuexModule {
       await api.post(baseAuthUrlSignUp, user);
       await this.logIn(user);
     } catch (err) {
-      const error = err.response.data.nonFieldErrors[0];
-      this.errorSignUp = error;
+      this.errorSignUp = [];
+      if (err instanceof Error) {
+        const fields = ['email', 'username', 'password'];
+        fields.forEach((field) => {
+          const errorMessages = err.response.data[field];
+          if (errorMessages) {
+            this.errorSignUp.push(errorMessages[0]);
+          }
+        });
+      }
     }
   }
 
